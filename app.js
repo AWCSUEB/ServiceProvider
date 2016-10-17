@@ -8,7 +8,7 @@ var request = require('request');
 var util = require('./lib/utility');
 var app = express();
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,7 +55,7 @@ var requestfn = function() {
   }
 };
 
-setInterval(requestfn, 5000);
+setInterval(requestfn, 1000);
 
 app.route('/').get(function(req, res, next) {
   res.send({
