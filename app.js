@@ -19,6 +19,9 @@ var resettime = undefined;
 var lastpingtime = undefined;
 var lasterrcount = 0;
 
+console.log("PORT=" + process.env.PORT);
+console.log("NAME=" + process.env.SPNAME);
+
 var requestfn = function() {
   if (!id) {
     request({
@@ -103,5 +106,6 @@ app.use(function(err, req, res, next) {
   }});
 });
 
+app.listen(process.env.PORT);
 
 module.exports = app;
