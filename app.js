@@ -19,46 +19,56 @@ var resettime = undefined;
 var lastpingtime = undefined;
 var lasterrcount = 0;
 
+console.log("SPNAME=" + process.env.SPNAME);
+console.log("HOST=" + process.env.HOST);
 console.log("PORT=" + process.env.PORT);
-console.log("NAME=" + process.env.SPNAME);
+console.log("RCHOST=" + process.env.RCHOST);
+console.log("RCPORT=" + process.env.RCPORT);
 
-var requestfn = function() {
+var connectTest = function() {
   if (!id) {
+    console.log('Connecting to http://' + process.env.RCHOST + ':' + process.env.RCPORT + '/ ...');
     request({
       method: 'POST',
-      uri: 'http://localhost:3000/providers',
+      uri: 'http://' + process.env.RCHOST + ':' + process.env.RCPORT + '/providers',
       json: true,
       body: {
         name: process.env.SPNAME,
-        uri: 'http://localhost:' + process.env.PORT + "/"
+        uri: 'http://' + process.env.HOST + ':' + process.env.PORT + "/"
       }
     }, function (err, res, body) {
       if (!err && res.statusCode == 200) {
         id = res.body.id;
         lastpingtime = new Date();
         lasterrcount = 0;
+        console.log("Connected as ID " + id);
+      } else {
+        console.log("Connection Failed: " + err.code);
       }
+      setTimeout(connectTest, 1000);
     });
   } else {
     request({
       method: 'PUT',
-      uri: 'http://localhost:3000/providers/' + id + '/ping'
+      uri: 'http://' + process.env.RCHOST + ':' + process.env.RCPORT + '/providers/' + id + '/ping'
     }, function (err, res, body) {
       if (!err && res.statusCode == 200) {
         lastpingtime = new Date();
         lasterrcount = 0;
       } else {
         lasterrcount++;
+        console.log("Ping error #" + lasterrcount);
 
         if (lasterrcount > 2) {
           id = undefined;
         }
       }
+      setTimeout(connectTest, 1000);
     });
   }
 };
 
-setInterval(requestfn, 1000);
+setTimeout(connectTest, 1000);
 
 app.route('/').get(function(req, res, next) {
   res.send({
@@ -105,7 +115,5 @@ app.use(function(err, req, res, next) {
     error: err
   }});
 });
-
-app.listen(process.env.PORT);
 
 module.exports = app;
