@@ -79,14 +79,6 @@ app.route('/').get(function(req, res, next) {
   });
 });
 
-app.route('/reserve').post(function(req, res, next) {
-  res.send("post");
-}).put(function(req, res, next) {
-  res.send("put");
-}).delete(function(req, res, next) {
-  res.send("delete");
-});
-
 app.route('/reset').post(function(req, res, next) {
   routes = util.queueList(req.query.n, id);
   resettime = new Date();
@@ -99,6 +91,20 @@ app.route('/routes').get(function(req, res, next) {
 
 app.route('/routes/:id').get(function(req, res, next) {
   res.send(routes[req.params.id.toUpperCase()]);
+});
+
+app.route('/try/:route').put(function(req, res, next) {
+  res.send({
+    id: req.body.id
+  });
+});
+
+app.route('/cancel/:route').put(function(req, res, next) {
+  res.send();
+});
+
+app.route('/confirm/:route').put(function(req, res, next) {
+  res.send();
 });
 
 // catch 404 and forward to error handler
