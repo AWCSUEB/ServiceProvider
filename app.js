@@ -59,7 +59,7 @@ var connectTest = function() {
         lasterrcount++;
         console.log("Ping error #" + lasterrcount);
 
-        if (lasterrcount > 2) {
+        if (lasterrcount > 30) {
           id = undefined;
         }
       }
@@ -94,17 +94,47 @@ app.route('/routes/:id').get(function(req, res, next) {
 });
 
 app.route('/try/:route').put(function(req, res, next) {
+  var route = routes[req.params.route.toUpperCase()];
+  if (!route.reservationId) {
+    route.reservationId = req.body.id;
+    route.reservationConfirmed = false;
+    console.log("[TRY] Reservation " + req.body.id + ", Route " + req.params.route.toUpperCase() + ": Success");
+  } else {
+    res.statusCode = 409;
+  }
   res.send({
-    id: req.body.id
+    id: req.body.id,
+    route: req.params.route.toUpperCase()
   });
 });
 
 app.route('/cancel/:route').put(function(req, res, next) {
-  res.send();
+  var route = routes[req.params.route.toUpperCase()];
+  if (route.reservationId && route.reservationConfirmed) {
+    delete route.reservationId;
+    delete route.reservationConfirmed;
+    console.log("[CANCEL] Reservation " + req.body.id + ", Route " + req.params.route.toUpperCase() + ": Success");
+  } else {
+    res.statusCode = 409;
+  }
+  res.send({
+    id: req.body.id,
+    route: req.params.route.toUpperCase()
+  });
 });
 
 app.route('/confirm/:route').put(function(req, res, next) {
-  res.send();
+  var route = routes[req.params.route.toUpperCase()];
+  if (route.reservationId == req.body.id) {
+    route.reservationConfirmed = true;
+    console.log("[CONFIRM] Reservation " + req.body.id + ", Route " + req.params.route.toUpperCase() + ": Success");
+  } else {
+    res.statusCode = 409;
+  }
+  res.send({
+    id: req.body.id,
+    route: req.params.route.toUpperCase()
+  });
 });
 
 // catch 404 and forward to error handler
