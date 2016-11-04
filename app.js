@@ -111,9 +111,13 @@ app.route('/try/:route').put(function(req, res, next) {
 app.route('/cancel/:route').put(function(req, res, next) {
   var route = routes[req.params.route.toUpperCase()];
   if (route.reservationId && route.reservationConfirmed) {
-    delete route.reservationId;
-    delete route.reservationConfirmed;
-    console.log("[CANCEL] Reservation " + req.body.id + ", Route " + req.params.route.toUpperCase() + ": Success");
+    if (route.reservationId == req.body.id) {
+      delete route.reservationId;
+      delete route.reservationConfirmed;
+      console.log("[CANCEL] Reservation " + req.body.id + ", Route " + req.params.route.toUpperCase() + ": Success");
+    } else {
+      res.statusCode = 409;
+    }
   } else {
     res.statusCode = 409;
   }
