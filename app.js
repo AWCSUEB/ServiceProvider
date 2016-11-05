@@ -79,8 +79,19 @@ app.route('/').get(function(req, res, next) {
   });
 });
 
+app.route('/add/:num').post(function(req, res, next) {
+  var newroutes = util.queueList(req.params.num, id, routes);
+  console.log("Adding routes: " + Object.keys(newroutes).join(","));
+  res.send(newroutes);
+  for (var r in newroutes) {
+    routes[r] = newroutes[r];
+  }
+  console.log("New route list: " + Object.keys(routes).join(","));
+});
+
 app.route('/reset').post(function(req, res, next) {
-  routes = util.queueList(req.query.n, id);
+  console.log("Reset route list");
+  routes = util.queueList(req.query.n, id, null);
   resettime = new Date();
   res.send(routes);
 });
