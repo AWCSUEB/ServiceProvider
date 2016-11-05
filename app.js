@@ -24,6 +24,9 @@ console.log("HOST=" + process.env.HOST);
 console.log("PORT=" + process.env.PORT);
 console.log("RCHOST=" + process.env.RCHOST);
 console.log("RCPORT=" + process.env.RCPORT);
+console.log("MAXFAILEDPINGTORESET=" + process.env.MAXFAILEDPINGTORESET);
+
+var maxFailedPingToReset = process.env.MAXFAILEDPINGTORESET;
 
 var connectTest = function() {
   if (!id) {
@@ -59,7 +62,7 @@ var connectTest = function() {
         lasterrcount++;
         console.log("Ping error #" + lasterrcount);
 
-        if (lasterrcount > 30) {
+        if (lasterrcount > maxFailedPingToReset) {
           id = undefined;
         }
       }
