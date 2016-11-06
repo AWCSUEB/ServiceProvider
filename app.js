@@ -18,9 +18,14 @@ var routes = {};
 var resettime = undefined;
 var lastpingtime = undefined;
 var lasterrcount = 0;
+var host = process.env.HOST;
+
+if (process.env.OPENSHIFT_NODEJS_IP) {
+    host = process.env.OPENSHIFT_NODEJS_IP;
+}
 
 console.log("SPNAME=" + process.env.SPNAME);
-console.log("HOST=" + process.env.HOST);
+console.log("HOST=" + host);
 console.log("PORT=" + process.env.PORT);
 console.log("RCHOST=" + process.env.RCHOST);
 console.log("RCPORT=" + process.env.RCPORT);
@@ -37,7 +42,7 @@ var connectTest = function() {
       json: true,
       body: {
         name: process.env.SPNAME,
-        uri: 'http://' + process.env.HOST + ':' + process.env.PORT + "/"
+        uri: 'http://' + host + ':' + process.env.PORT + "/"
       }
     }, function (err, res, body) {
       if (!err && res.statusCode == 200) {
