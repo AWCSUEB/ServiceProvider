@@ -19,14 +19,19 @@ var resettime = undefined;
 var lastpingtime = undefined;
 var lasterrcount = 0;
 var host = process.env.HOST;
+var port = process.env.PORT;
 
 if (process.env.OPENSHIFT_NODEJS_IP) {
     host = process.env.OPENSHIFT_NODEJS_IP;
 }
 
+if (process.env.OPENSHIFT_NODEJS_PORT) {
+    port = process.env.OPENSHIFT_NODEJS_PORT;
+}
+
 console.log("SPNAME=" + process.env.SPNAME);
 console.log("HOST=" + host);
-console.log("PORT=" + process.env.PORT);
+console.log("PORT=" + port);
 console.log("RCHOST=" + process.env.RCHOST);
 console.log("RCPORT=" + process.env.RCPORT);
 console.log("MAXFAILEDPINGTORESET=" + process.env.MAXFAILEDPINGTORESET);
