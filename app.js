@@ -21,9 +21,13 @@ var lasterrcount = 0;
 
 var host = process.env.HOST;
 var port = process.env.PORT;
+var extport = process.env.EXTPORT; // don't use the randomly allocated port in heroku, use the externally exposed port (80 or 443)
 app.set('host', host);
 app.set('port', port);
 
+console.log("HOST=" + process.env.HOST);
+console.log("PORT=" + process.env.PORT);
+console.log("EXTPORT=" + process.env.EXTPORT);
 console.log("SPNAME=" + process.env.SPNAME);
 console.log("RCHOST=" + process.env.RCHOST);
 console.log("RCPORT=" + process.env.RCPORT);
@@ -40,7 +44,7 @@ var connectTest = function() {
       json: true,
       body: {
         name: process.env.SPNAME,
-        uri: 'http://' + host + ':' + port + "/"
+        uri: 'http://' + host + ':' + extport + "/"
       }
     }, function (err, res, body) {
       if (!err && res.statusCode == 200) {
