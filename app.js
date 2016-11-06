@@ -47,7 +47,7 @@ var connectTest = function() {
       json: true,
       body: {
         name: process.env.SPNAME,
-        uri: 'http://' + host + ':' + process.env.PORT + "/"
+        uri: 'http://' + host + ':' + port + "/"
       }
     }, function (err, res, body) {
       if (!err && res.statusCode == 200) {
