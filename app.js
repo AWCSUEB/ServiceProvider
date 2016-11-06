@@ -19,8 +19,10 @@ var resettime = undefined;
 var lastpingtime = undefined;
 var lasterrcount = 0;
 
-app.set('host', process.env.HOST);
-app.set('port', process.env.PORT);
+var host = process.env.HOST;
+var port = process.env.PORT;
+app.set('host', host);
+app.set('port', port);
 
 console.log("SPNAME=" + process.env.SPNAME);
 console.log("RCHOST=" + process.env.RCHOST);
