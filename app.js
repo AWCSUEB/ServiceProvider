@@ -18,16 +18,21 @@ var routes = {};
 var resettime = undefined;
 var lastpingtime = undefined;
 var lasterrcount = 0;
+
 var host = process.env.HOST;
 var port = process.env.PORT;
 
-if (process.env.OPENSHIFT_NODEJS_IP) {
-    host = process.env.OPENSHIFT_NODEJS_IP;
+if (process.env.SPNAME == "OS_SP1") {
+  host = process.env.SP_SERVICE_HOST;
+  port = process.env.SP_SERVICE_PORT;
 }
 
-if (process.env.OPENSHIFT_NODEJS_PORT) {
-    port = process.env.OPENSHIFT_NODEJS_PORT;
+if (process.env.SPNAME == "OS_SP2") {
+  host = process.env.SP2_SERVICE_HOST;
+  port = process.env.SP2_SERVICE_PORT;
 }
+
+app.set('port', port);
 
 console.log("SPNAME=" + process.env.SPNAME);
 console.log("HOST=" + host);
