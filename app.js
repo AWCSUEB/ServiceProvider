@@ -53,7 +53,11 @@ var connectTest = function() {
         lasterrcount = 0;
         console.log("Connected as ID " + id);
       } else {
-        console.log("Connection Failed: " + err.code);
+        if (err) {
+          console.log("Connection Failed: Err " + err.number);
+        } else {
+          console.log("Connection Failed: HTTP " + res.statusCode);
+        }
       }
       setTimeout(connectTest, 1000);
     });
